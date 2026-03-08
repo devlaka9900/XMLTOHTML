@@ -1,21 +1,179 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>XML to HTML Tool</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>XML HTML DIRECT</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body{
+      width:100%;
+      height:100%;
+      font-weight: 500;
+    }
+
+    .main-panel{
+      width:100%;
+      height:100%;
+      height:auto;
+      background:#0F172A;   /* pink */
+      padding:46px 70px;
+      position:relative;
+    }
+
+    .section-title{
+      text-align:center;
+      font-size:22px;
+      font-weight:500;
+      margin-bottom:22px;
+      color:#E2E8F0;;
+    }
+
+    .field-row{ margin-bottom:14px; }
+
+    .label-box{
+      background:#3a3a3a;
+      height:24px;
+      display:flex;
+      align-items:center;
+      padding:0 10px;
+      font-size:14px;
+      color:#ffffff;
+      white-space:nowrap;
+    }
+
+    .value-box{
+      height:24px;
+      background:#ebff79;
+      border:0;
+      width:100%;
+      padding:0 10px;
+      font-size:14px;
+      outline:none;
+    }
+
+    /* highlighted input (Provider right side in screenshot) */
+    .value-box.focused{
+      background:#fff;
+      border:2px solid #111;
+    }
+
+    .divider-space{ height:34px; }
+
+    .action-btn{
+      margin-left: 50%;
+    }
+
+    #filePath{
+      font-size: 10px solid #fff;
+    }
+
+    /* keep the 2 columns spaced like screenshot */
+    .col-left { padding-right:10px; }
+    .col-right{ padding-left:10px; }
+  </style>
 </head>
+
 <body>
 
-  <h1>XML to HTML Converter</h1>
+  <div class="main-panel">
+    <!-- Top section -->
+    <div class="section-title">XML Metadata Preview</div>
 
-  <button id="uploadBtn">Upload XML</button>
-  <p id="filePath"></p>
+    <div class="container-fluid p-0">
+      <div class="row field-row align-items-center">
+        <div class="col-6 col-left">
+          <div class="label-box">Content Title:</div>
+        </div>
+        <div class="col-6 col-right">
+          <div class="label-box" id="">TEST</div>
+        </div>
+      </div>
 
-  <button id="convertBtn" disabled>Convert & Save HTML</button>
+      <div class="row field-row align-items-center">
+        <div class="col-6 col-left">
+          <div class="label-box">URL</div>
+        </div>
+        <div class="col-6 col-right">
+           <div class="label-box" id="">TEST</div>
+        </div>
+      </div>
 
-  <p id="status"></p>
+      <div class="row field-row align-items-center">
+        <div class="col-6 col-left">
+          <div class="label-box">Version</div>
+        </div>
+        <div class="col-6 col-right">
+           <div class="label-box" id="">TEST</div>
+        </div>
+      </div>
 
+      <div class="row field-row align-items-center">
+        <div class="col-6 col-left">
+          <div class="label-box">Provider:</div>
+        </div>
+        <div class="col-6 col-right">
+           <div class="label-box" id="">TEST</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Bottom section -->
+    <div class="section-title">XML Content Metadata Preview</div>
+
+    <div class="container-fluid p-0">
+      <div class="row field-row align-items-center">
+        <div class="col-6 col-left">
+          <div class="label-box">Total Levels</div>
+        </div>
+        <div class="col-6 col-right">
+           <div class="label-box" id=""><p id="h1Count"></p></div>
+        </div>
+      </div>
+
+      <div class="row field-row align-items-center">
+        <div class="col-6 col-left">
+          <div class="label-box">Total Links</div>
+        </div>
+        <div class="col-6 col-right">
+           <div class="label-box" id="">TEST</div>
+        </div>
+      </div>
+
+      <div class="row field-row align-items-center">
+        <div class="col-6 col-left">
+          <div class="label-box">Total Images</div>
+        </div>
+        <div class="col-6 col-right">
+           <div class="label-box" id="">TEST</div>
+        </div>
+      </div>
+
+      <div class="row field-row align-items-center">
+        <div class="col-6 col-left">
+          <div class="label-box">Total Footnotes</div>
+        </div>
+        <div class="col-6 col-right">
+           <div class="label-box" id="">TEST</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">
+      <button type="button" class="btn btn-dark" id="selectXmlBtn">Choose XML</button>
+      <p id="filePath"></p>
+    </div>
+    
+    
+          
+  </div>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/main.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

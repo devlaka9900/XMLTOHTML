@@ -1,31 +1,12 @@
-const uploadBtn = document.getElementById('uploadBtn');
-const convertBtn = document.getElementById('convertBtn');
-const filePathDisplay = document.getElementById('filePath');
-const status = document.getElementById('status');
+const btn = document.getElementById("selectXmlBtn");
+const filePathDisplay = document.getElementById("filePath");
 
-let selectedFilePath = null;
-
-uploadBtn.addEventListener('click', async () => {
-  const filePath = await window.api.selectFile();
+btn.addEventListener("click", async () => {
+  const filePath = await window.api.selectXML();
 
   if (filePath) {
-    selectedFilePath = filePath;
-    filePathDisplay.textContent = filePath;
-    convertBtn.disabled = false;
-    status.textContent = '';
-  }
-});
-
-convertBtn.addEventListener('click', async () => {
-  if (!selectedFilePath) return;
-
-  status.textContent = 'Processing...';
-
-  const result = await window.api.convertFile(selectedFilePath);
-
-  if (result.success) {
-    status.textContent = 'Conversion successful! 🎉';
+    filePathDisplay.textContent = "Selected: " + filePath;
   } else {
-    status.textContent = 'Error: ' + (result.error || 'Operation cancelled');
+    filePathDisplay.textContent = "No file selected.";
   }
 });
