@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -9,71 +10,86 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <style>
-    body{
-      width:100%;
-      height:100%;
+    body {
+      width: 100%;
+      height: 100%;
       font-weight: 500;
     }
 
-    .main-panel{
-      width:100%;
-      height:100%;
-      height:auto;
-      background:#0F172A;   /* pink */
-      padding:46px 70px;
-      position:relative;
+    .main-panel {
+      width: 100%;
+      height: 100%;
+      height: auto;
+      background: #0F172A;
+      /* pink */
+      padding: 46px 70px;
+      position: relative;
     }
 
-    .section-title{
-      text-align:center;
-      font-size:22px;
-      font-weight:500;
-      margin-bottom:22px;
-      color:#E2E8F0;;
+    .section-title {
+      text-align: center;
+      font-size: 22px;
+      font-weight: 500;
+      margin-bottom: 22px;
+      color: #E2E8F0;
+      ;
     }
 
-    .field-row{ margin-bottom:14px; }
-
-    .label-box{
-      background:#3a3a3a;
-      height:24px;
-      display:flex;
-      align-items:center;
-      padding:0 10px;
-      font-size:14px;
-      color:#ffffff;
-      white-space:nowrap;
+    .field-row {
+      margin-bottom: 14px;
     }
 
-    .value-box{
-      height:24px;
-      background:#ebff79;
-      border:0;
-      width:100%;
-      padding:0 10px;
-      font-size:14px;
-      outline:none;
+    .label-box {
+      background: #3a3a3a;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      font-size: 14px;
+      color: #ffffff;
+      white-space: nowrap;
+      overflow: hidden;
+
+    }
+
+    .value-box {
+      height: 24px;
+      background: #ebff79;
+      border: 0;
+      width: 100%;
+      padding: 0 10px;
+      font-size: 14px;
+      outline: none;
+      z-index: 100;
     }
 
     /* highlighted input (Provider right side in screenshot) */
-    .value-box.focused{
-      background:#fff;
-      border:2px solid #111;
+    .value-box.focused {
+      background: #fff;
+      border: 2px solid #111;
     }
 
-    .divider-space{ height:34px; }
+    .divider-space {
+      height: 34px;
+    }
 
-    .action-btn{
+    .action-btn {
       margin-left: 50%;
     }
 
-    #filePath{
-      font-size: 10px solid #fff;
+    #filePath {
+      font-size: 10px;
+      color: #fff;
     }
 
     /* keep the 2 columns spaced like screenshot */
-    .col-left { padding-right:10px; }
-    .col-right{ padding-left:10px; }
+    .col-left {
+      padding-right: 10px;
+    }
+
+    .col-right {
+      padding-left: 10px;
+    }
   </style>
 </head>
 
@@ -89,7 +105,8 @@
           <div class="label-box">Content Title:</div>
         </div>
         <div class="col-6 col-right">
-          <div class="label-box" id="">TEST</div>
+          <!-- Content Title (first H1 text) -->
+          <div class="label-box" id="contentTitle">H1 CONTENT IN XML</div>
         </div>
       </div>
 
@@ -98,16 +115,18 @@
           <div class="label-box">URL</div>
         </div>
         <div class="col-6 col-right">
-           <div class="label-box" id="">TEST</div>
+          <!-- URL (first URL/link tag text) -->
+          <div class="label-box" id="urlValue">URL LINK TAG CONTENT IN XML</div>
         </div>
       </div>
 
       <div class="row field-row align-items-center">
         <div class="col-6 col-left">
-          <div class="label-box">Version</div>
+          <div class="label-box">Issue-Date</div>
         </div>
         <div class="col-6 col-right">
-           <div class="label-box" id="">TEST</div>
+          <!-- Version -->
+          <div class="label-box" id="issuedate">ISSUE DATE TAG IN XML</div>
         </div>
       </div>
 
@@ -116,11 +135,12 @@
           <div class="label-box">Provider:</div>
         </div>
         <div class="col-6 col-right">
-           <div class="label-box" id="">TEST</div>
+          <!-- Provider (derived from level-rule num attribute) -->
+          <div class="label-box" id="providerValue">LEVEL RULE TAG...</div>
         </div>
       </div>
     </div>
-    
+
     <!-- Bottom section -->
     <div class="section-title">XML Content Metadata Preview</div>
 
@@ -130,7 +150,8 @@
           <div class="label-box">Total Levels</div>
         </div>
         <div class="col-6 col-right">
-           <div class="label-box" id=""><p id="h1Count"></p></div>
+          <!-- Total Levels (you already have h1Count id, keep it) -->
+          <div class="label-box" id="h1Count">NUMBER OF TOTAL H TAGS IN XML</div>
         </div>
       </div>
 
@@ -139,7 +160,8 @@
           <div class="label-box">Total Links</div>
         </div>
         <div class="col-6 col-right">
-           <div class="label-box" id="">TEST</div>
+          <!-- Total Links -->
+          <div class="label-box" id="totalLinks" aria-placeholder="">URL LINK tags in XML</div>
         </div>
       </div>
 
@@ -148,7 +170,8 @@
           <div class="label-box">Total Images</div>
         </div>
         <div class="col-6 col-right">
-           <div class="label-box" id="">TEST</div>
+          <!-- Total Images -->
+          <div class="label-box" id="totalImages">IMG TAGS IN XML</div>
         </div>
       </div>
 
@@ -157,7 +180,8 @@
           <div class="label-box">Total Footnotes</div>
         </div>
         <div class="col-6 col-right">
-           <div class="label-box" id="">TEST</div>
+          <!-- Total Footnotes -->
+          <div class="label-box" id="totalFootnotes">FOOTNOTE REF TAGS IN XML</div>
         </div>
       </div>
     </div>
@@ -166,14 +190,15 @@
       <button type="button" class="btn btn-dark" id="selectXmlBtn">Choose XML</button>
       <p id="filePath"></p>
     </div>
-    
-    
-          
+
+
+
   </div>
 
-  
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="/main.js"></script>
+
   <script src="script.js"></script>
 </body>
+
 </html>

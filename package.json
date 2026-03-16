@@ -6,7 +6,8 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder --win"
+    "build": "electron-builder --win",
+    "dev": "nodemon --watch main.js --watch preload.js --watch renderer --exec \"electron .\""
   },
   "build": {
     "appId": "com.binura.xmltool",
@@ -16,7 +17,8 @@
     }
   },
   "dependencies": {
-    "fast-xml-parser": "^4.3.0"
+    "fast-xml-parser": "^4.3.0",
+    "nodemon": "^3.1.14"
   },
   "devDependencies": {
     "electron": "^28.0.0",
