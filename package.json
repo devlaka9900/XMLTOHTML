@@ -17,6 +17,7 @@
     }
   },
   "dependencies": {
+    "@xmldom/xmldom": "^0.8.11",
     "fast-xml-parser": "^4.3.0",
     "nodemon": "^3.1.14"
   },

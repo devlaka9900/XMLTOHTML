@@ -1,67 +1,96 @@
-const btn = document.getElementById("selectXmlBtn");
+const btn = document.getElementById("selectXmlBtn"); // get main button
+const filePathEl = document.getElementById("filePath"); // get path/status display
 
-// UI element for displaying the selected file path
-const filePathEl = document.getElementById("filePath");
+let generatedHtml = null; // store generated html for later download
+let selectedXmlPath = null; // store selected xml path
+let mode = "choose"; // track current button mode
 
-// UI elements for displaying XML metadata
-const contentTitleEl = document.getElementById("contentTitle");
-const urlValueEl = document.getElementById("urlValue");
-const issuedateEl = document.getElementById("issuedate");
-const providerValueEl = document.getElementById("providerValue");
+const contentTitleEl = document.getElementById("contentTitle"); // get content title element
+const urlValueEl = document.getElementById("urlValue"); // get url value element
+const issuedateEl = document.getElementById("issuedate"); // get issue date element
+const providerValueEl = document.getElementById("providerValue"); // get provider value element
 
-// UI elements for displaying parsed XML statistics / counts
-const h1CountEl = document.getElementById("h1Count");
-const totalLinksEl = document.getElementById("totalLinks");
-const totalImagesEl = document.getElementById("totalImages");
-const totalFootnotesEl = document.getElementById("totalFootnotes");
+const h1CountEl = document.getElementById("h1Count"); // get heading count element
+const totalLinksEl = document.getElementById("totalLinks"); // get links count element
+const totalImagesEl = document.getElementById("totalImages"); // get images count element
+const totalFootnotesEl = document.getElementById("totalFootnotes"); // get footnotes count element
 
-// Event listener for the "Choose XML" button
+function setLoadingState() {
+  filePathEl.textContent = "Selecting XML..."; // show loading text
+  h1CountEl.textContent = "..."; // show loading for heading count
+  contentTitleEl.textContent = "..."; // show loading for title
+  urlValueEl.textContent = "..."; // show loading for url
+  issuedateEl.textContent = "..."; // show loading for issue date
+  providerValueEl.textContent = "..."; // show loading for provider
+  totalLinksEl.textContent = "..."; // show loading for links
+  totalImagesEl.textContent = "..."; // show loading for images
+  totalFootnotesEl.textContent = "..."; // show loading for footnotes
+}
+
+function resetDisplayState(message = "No file selected.") {
+  filePathEl.textContent = message; // show default message
+  h1CountEl.textContent = "-"; // reset heading count
+  contentTitleEl.textContent = "-"; // reset title
+  urlValueEl.textContent = "-"; // reset url
+  issuedateEl.textContent = "-"; // reset issue date
+  providerValueEl.textContent = "-"; // reset provider
+  totalLinksEl.textContent = "-"; // reset links
+  totalImagesEl.textContent = "-"; // reset images
+  totalFootnotesEl.textContent = "-"; // reset footnotes
+}
+
 btn.addEventListener("click", async () => {
-  // small loading state
-  filePathEl.textContent = "Selecting XML...";
-  h1CountEl.textContent = "...";
-  contentTitleEl.textContent = "...";
-  urlValueEl.textContent = "...";
-  issuedateEl.textContent = "...";
-  providerValueEl.textContent = "...";
-  totalLinksEl.textContent = "...";
-  totalImagesEl.textContent = "...";
-  totalFootnotesEl.textContent = "...";
+  if (mode === "choose") {
+    setLoadingState(); // set loading state before opening xml
 
-  try {
-    // Invoke the IPC handler exposed via preload.js (xml:select-and-analyze)
-    const res = await window.api.selectXmlAndAnalyze();
+    try {
+      const res = await window.api.selectXmlAndAnalyze(); // ask backend to select and process xml
 
-    // If the user canceled the dialog or no file was selected, clear the UI
-    if (!res) {
-      filePathEl.textContent = "No file selected.";
-      h1CountEl.textContent = "-";
-      contentTitleEl.textContent = "-";
-      urlValueEl.textContent = "-";
-      issuedateEl.textContent = "-";
-      providerValueEl.textContent = "-";
-      totalLinksEl.textContent = "-";
-      totalImagesEl.textContent = "-";
-      totalFootnotesEl.textContent = "-";
-      return;
+      if (!res) {
+        resetDisplayState(); // reset ui if canceled
+        return; // stop flow
+      }
+
+      generatedHtml = res.htmlContent; // store generated html
+      selectedXmlPath = res.filePath; // store selected xml path
+
+      filePathEl.textContent = res.filePath; // show selected file path
+      contentTitleEl.textContent = res.contentTitle || "-"; // show title
+      urlValueEl.textContent = res.urlValue || "-"; // show url
+      issuedateEl.textContent = res.issuedate || "-"; // show issue date
+      providerValueEl.textContent = res.providerValue || "-"; // show provider
+      h1CountEl.textContent = String(res.totalH); // show heading count
+      totalLinksEl.textContent = String(res.totalLinks); // show links count
+      totalImagesEl.textContent = String(res.totalImages); // show images count
+      totalFootnotesEl.textContent = String(res.totalFootnotes); // show footnotes count
+
+      btn.textContent = "Download HTML"; // change button label
+      mode = "download"; // switch to download mode
+    } catch (error) {
+      console.error(error); // log error
+      resetDisplayState("Error reading XML."); // show error state
     }
 
-    // fill UI from backend results by binding the returned object properties to the elements text content
-    filePathEl.textContent = res.filePath;
+    return; // stop after choose mode
+  }
 
-    
+  if (mode === "download") {
+    try {
+      if (!generatedHtml || !selectedXmlPath) {
+        filePathEl.textContent = "No generated HTML found."; // guard against empty html
+        return; // stop if missing html
+      }
 
-    contentTitleEl.textContent = res.contentTitle || "-";
-    urlValueEl.textContent = res.urlValue || "-";
-    issuedateEl.textContent = res.issuedate || "-";
-    providerValueEl.textContent = res.providerValue || "-";
+      const saveResult = await window.api.saveHtmlFile(generatedHtml, selectedXmlPath); // ask backend to save html
 
-    h1CountEl.textContent = String(res.totalH);
-    totalLinksEl.textContent = String(res.totalLinks);
-    totalImagesEl.textContent = String(res.totalImages);
-    totalFootnotesEl.textContent = String(res.totalFootnotes);
-  } catch (err) {
-    console.error(err);
-    filePathEl.textContent = "Error reading XML.";
+      if (saveResult && saveResult.success) {
+        filePathEl.textContent = `HTML saved: ${saveResult.savedPath}`; // show saved path
+      } else {
+        filePathEl.textContent = "Save canceled."; // show cancel message
+      }
+    } catch (error) {
+      console.error(error); // log error
+      filePathEl.textContent = "Error saving HTML."; // show save error
+    }
   }
 });
